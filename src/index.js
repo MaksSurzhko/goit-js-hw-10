@@ -26,8 +26,9 @@ function renderCountryList(countries) {
 }
 
 function renderCountryInfo(countries) {
-  const markup = countries
-    .map(({ flags: { svg }, name: { official }, capital, population, languages }) => { 
+    const markup = countries
+        .map(({ flags: { svg }, name: { official }, capital, population, languages }) => { 
+        const languagesValues = Object.values(languages).join(', ');
       return `
         <div class="country-info__card">
           <img class="country-info__flag" src="${svg}" alt="Flag of ${official}">
@@ -35,7 +36,7 @@ function renderCountryInfo(countries) {
             <h2 class="country-info__name">${official}</h2>
             <p><span>Capital:</span> ${capital}</p>
             <p><span>Population:</span> ${population}</p>
-            <p><span>Languages:</span> ${languages}</p>
+            <p><span>Languages:</span> ${languagesValues}</p>
           </div>
         </div>
       `;
