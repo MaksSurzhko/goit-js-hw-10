@@ -11,11 +11,11 @@ const info = document.querySelector('.country-info');
 
 function renderCountryList(countries) {
   const markup = countries
-    .map(country => {
+      .map(({ flags: {svg}, name: {official} }) => {
       return `
         <li class="country-list-item">
-          <img class="country-list-item__flag" src="${country.flags.svg}" alt="Flag of ${country.name.official}">
-          <p class="country-list-item__name">${country.name.official}</p>
+          <img class="country-list-item__flag" src="${svg}" alt="Flag of ${official}">
+          <p class="country-list-item__name">${official}</p>
         </li>
       `;
     })
@@ -25,23 +25,28 @@ function renderCountryList(countries) {
   
 }
 
-function renderCountryInfo(country) {
-  const markup = `
-    <div class="country-info__card">
-      <img class="country-info__flag" src="${country.flags.svg}" alt="Flag of ${country.name.official}">
-      <div class="country-info__details">
-        <h2 class="country-info__name">${country.name.official}</h2>
-        <p><span>Capital:</span> ${country.capital}</p>
-        <p><span>Population:</span> ${country.population}</p>
-        <p><span>Languages:</span> ${country.languages.map(language => language.name).join(', ')}</p>
-      </div>
-    </div>
-  `;
+function renderCountryInfo(countries) {
+  const markup = countries
+    .map(({ flags: { svg }, name: { official }, capital, population, languages }) => { 
+      return `
+        <div class="country-info__card">
+          <img class="country-info__flag" src="${svg}" alt="Flag of ${official}">
+          <div class="country-info__details">
+            <h2 class="country-info__name">${official}</h2>
+            <p><span>Capital:</span> ${capital}</p>
+            <p><span>Population:</span> ${population}</p>
+            <p><span>Languages:</span> ${languages}</p>
+          </div>
+        </div>
+      `;
+    })
+    .join('')
   info.innerHTML = markup;
 }
 
 
 search.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
+
 
 function onSearch(event) {
   const searchQuery = event.target.value.trim();
@@ -54,7 +59,7 @@ function onSearch(event) {
   fetchCountries(searchQuery)
     .then(countries => {
       if (countries.length === 1) {
-        renderCountryInfo(countries[0]);
+        renderCountryInfo(countries);
       } else if (countries.length > 1 && countries.length <= 10) {
         renderCountryList(countries);
       } else {
