@@ -52,12 +52,17 @@ function onSearch(event) {
   const searchQuery = event.target.value.trim();
   if (searchQuery.length < 1) {
     list.innerHTML = '';
-    info.innerHTML = '';
+    fetchCountries('')
+      .then(countries => {
+        renderCountryList(countries);
+      });
     return;
   }
 
   fetchCountries(searchQuery)
     .then(countries => {
+        list.innerHTML = '';
+        info.innerHTML = '';
       if (countries.length === 1) {
         renderCountryInfo(countries);
       } else if (countries.length > 1 && countries.length <= 10) {

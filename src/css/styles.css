@@ -39,3 +39,7 @@ body {
 .country-list{
   padding: 0;
 }
+
+.country-info__flag{
+  width: 350px
+}
