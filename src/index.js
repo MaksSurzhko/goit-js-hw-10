@@ -50,29 +50,33 @@ search.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 
 function onSearch(event) {
-  const searchQuery = event.target.value.trim();
-  if (searchQuery.length < 1) {
-    list.innerHTML = '';
-    fetchCountries('')
-      .then(countries => {
-        renderCountryList(countries);
-      });
-    return;
-  }
-
-  fetchCountries(searchQuery)
-    .then(countries => {
+    const searchQuery = event.target.value.trim();
+    if (searchQuery.length < 1) {
         list.innerHTML = '';
-        info.innerHTML = '';
-      if (countries.length === 1) {
-        renderCountryInfo(countries);
-      } else if (countries.length > 1 && countries.length <= 10) {
+        fetchCountries('')
         renderCountryList(countries);
-      } else {
-        Notiflix.Notify.info('Too many matches found. Please enter a more specific query!');
-      }
-    })
-    .catch(error => {
-      Notiflix.Notify.failure('Oops, something went wrong!');
-    });
+        return;
+    }
+
+    fetchCountries(searchQuery)
+        .then(countries => {
+            list.innerHTML = '';
+            info.innerHTML = '';
+            if (countries.length === 1) {
+                renderCountryInfo(countries);
+            } else if (countries.length > 1 && countries.length <= 10) {
+                renderCountryList(countries);
+            } else {
+                Notiflix.Notify.info('Too many matches found. Please enter a more specific query!');
+            }
+        })
+         .catch(error => {
+    if (error.status === 404) {
+       Notiflix.Notify.failure('Oops, something went wrong!');
+    } else {
+       Notiflix.Notify.failure('Oops, something went wrong!');
+       list.innerHTML = '';
+       info.innerHTML = '';
+    }
+  });
 }
