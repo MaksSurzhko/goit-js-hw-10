@@ -71,7 +71,7 @@ function onSearch(event) {
             }
         })
          .catch(error => {
-    if (error.status === 404) {
+    if (error.message === 404) {
        Notiflix.Notify.failure('Oops, something went wrong!');
     } else {
        Notiflix.Notify.failure('Oops, something went wrong!');
