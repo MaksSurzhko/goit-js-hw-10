@@ -70,7 +70,7 @@ function onSearch(event) {
                 Notiflix.Notify.info('Too many matches found. Please enter a more specific query!');
             }
         })
-         .catch(error => {
+        .catch(error => {
     if (error.message === 404) {
        Notiflix.Notify.failure('Oops, something went wrong!');
     } else {
